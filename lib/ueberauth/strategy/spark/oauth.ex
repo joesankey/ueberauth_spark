@@ -15,8 +15,8 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
       @defaults
       |> Keyword.merge(spark_config)
       |> Keyword.merge(opts)
-
-    OAuth2.Client.new(opts)
+    IO.inspect @defaults
+    OAuth2.Client.new(client_opts)
   end
 
   def authorize_url!(params \\ [], opts \\ []) do
