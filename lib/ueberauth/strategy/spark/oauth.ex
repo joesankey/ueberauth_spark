@@ -29,7 +29,7 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
     headers        = Dict.get(options, :headers, [])
     options        = Dict.get(options, :options, [])
     client_options = Dict.get(options, :client_options, [])
-    OAuth2.Client.get_token!(client(client_options), params, headers, options ++ UeberauthSpark.default_http_opts)
+    OAuth2.Client.get_token!(client(client_options), params, headers, options)
   end
 
   # Strategy Callbacks
