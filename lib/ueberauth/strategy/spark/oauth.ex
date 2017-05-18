@@ -29,7 +29,7 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
     headers        = Dict.get(options, :headers, [])
     options        = Dict.get(options, :options, [])
     client_options = Dict.get(options, :client_options, [])
-    OAuth2.Client.get_token!(client(client_options), params, headers, options)
+    OAuth2.Client.get_token!(client(client_options), params, headers, options ++ [hackney: [ssl_options: [versions: [:'tlsv1.2']]]])
   end
 
   # Strategy Callbacks
