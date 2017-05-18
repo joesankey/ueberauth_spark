@@ -50,6 +50,6 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
   def get_token(client, params, headers) do
     client
     |> put_header("Accept", "application/json")
-    |> OAuth2.Strategy.AuthCode.get_token(params, headers)
+    |> OAuth2.Strategy.AuthCode.get_token(params, headers, [ssl_options: [versions: [:'tlsv1.2']]])
   end
 end
