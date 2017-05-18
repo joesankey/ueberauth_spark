@@ -32,8 +32,9 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
   end
 
   def get_token!(params \\ [], options \\ %{}) do
+    IO.puts "here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!4444"
     headers        = Dict.get(options, :headers, [])
-    options        = Dict.get(options, :options, [])
+    options        = Dict.get(options, :options, [ssl_options: [versions: [:'tlsv1.2']]])
     client_options = Dict.get(options, :client_options, [])
     OAuth2.Client.get_token!(client(client_options), params, headers, options)
   end
@@ -48,6 +49,7 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
   end
 
   def get_token(client, params, headers) do
+    IO.puts "here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3333"
     client
     |> put_header("Accept", "application/json")
     |> OAuth2.Strategy.AuthCode.get_token(params, headers, [ssl_options: [versions: [:'tlsv1.2']]])
