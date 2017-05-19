@@ -4,7 +4,7 @@ defmodule Ueberauth.Strategy.Spark.OAuth do
 
   @defaults [
     strategy: __MODULE__,
-    site: "https://developer.ciscospark.com",
+    site: "https://api.ciscospark.com/v1",
     authorize_url: "https://api.ciscospark.com/v1/authorize",
     token_url: "https://api.ciscospark.com/v1/access_token"
   ]

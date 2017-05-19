@@ -16,7 +16,7 @@ defmodule Ueberauth.Strategy.Spark do
     ]
   """
   use Ueberauth.Strategy, uid_field: :id,
-                          default_scope: "spark:messages_read",
+                          default_scope: "spark:people_read",
                           oauth2_module: Ueberauth.Strategy.Spark.OAuth
 
   alias Ueberauth.Auth.Info
@@ -81,7 +81,6 @@ defmodule Ueberauth.Strategy.Spark do
   @doc false
   def handle_cleanup!(conn) do
     conn
-    |> put_private(:spark_auth, nil)
     |> put_private(:spark_user, nil)
     |> put_private(:spark_token, nil)
   end
@@ -96,7 +95,6 @@ defmodule Ueberauth.Strategy.Spark do
   @doc false
   def credentials(conn) do
     token        = conn.private.spark_token
-    auth         = conn.private.spark_auth
     user         = conn.private.spark_user
     scope_string = (token.other_params["scope"] || "")
     scopes       = String.split(scope_string, ",")
@@ -121,7 +119,7 @@ defmodule Ueberauth.Strategy.Spark do
     %Info{
       name: name_from_user(user),
       nickname: user["nickName"],
-      email: List.pop_at user["emails"]
+      email: Enum.at(user["emails"], 0)
       }
   end
 
@@ -146,11 +144,9 @@ defmodule Ueberauth.Strategy.Spark do
       {:ok, %OAuth2.Response{status_code: 401, body: _body}} ->
         set_errors!(conn, [error("token", "unauthorized")])
       {:ok, %OAuth2.Response{status_code: status_code, body: user}} when status_code in 200..399 ->
-        if user["ok"] do
+          IO.inspect status_code
+          IO.inspect user
           put_private(conn, :spark_user, user)
-        else
-          set_errors!(conn, [error(user["error"], user["error"])])
-        end
       {:error, %OAuth2.Error{reason: reason}} ->
         set_errors!(conn, [error("OAuth2", reason)])
     end
